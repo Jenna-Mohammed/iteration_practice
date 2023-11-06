@@ -76,7 +76,7 @@ z_scores(x_vec)
 # we are telling z scores that the input ^ that whenever we see an x in the body of a function, that is where we are going to plug in "x_vec
 ```
 
-Try my function on some other things 
+Try my function on some other things. These should have errors 
 
 ```{r error=TRUE}
 z_scores(3)
@@ -125,6 +125,7 @@ z_scores(x_vec)
 
 ```
 
+Try y funtion on some other things (again), these should have errors 
 ```{r error=TRUE}
 z_scores(3)
 
@@ -135,3 +136,118 @@ z_scores(mtcars)
 z_scores(c(TRUE, TRUE, FALSE, TRUE))
 
 ```
+
+## Multiple Outputs 
+
+making it more complex 
+
+compute mean and sd at the same time 
+
+```{r}
+mean_and_sd = function(x) {
+  
+ if (!is.numeric(x)) {
+   stop("Input must be numeric")
+ }
+
+  if (length(x) < 3) {
+    stop("Input must have at least 3 numbers")
+  }
+
+ mean_x = mean(x) 
+ sd_x = sd(x)
+ 
+ list(
+   mean = mean_x,
+   sd = sd_x
+ )
+ 
+ # if you have a variety of things that you want to put toether, you can make that a list
+ 
+ tibble(
+   mean = mean_x,
+   sd = sd_x
+ )
+  
+ # ^ making this a dataframe (in a table)
+}
+```
+
+check that the function works 
+
+```{r}
+mean_and_sd(x_vec)
+```
+
+we passed in an input vector x, and got 5.54 as the mean and 2.67 as the sd 
+
+## Multiple Inputs 
+
+This function will say "give me a sample size, mean, and sd and I am going to spit things out"
+
+Up until this point we have been creating a vector and spitting it out
+
+
+I'd like to do this with a function 
+
+```{r}
+# create a simulated dataset
+
+sim_data = 
+  tibble(
+    x = rnorm(n = 100, mean = 4, sd = 3)
+  )
+
+# we have 3 inputs, the sample size, mean, and sd
+
+sim_data |>
+  summarize(
+  mean = mean(x), 
+  sd = sd(x)
+)
+```
+
+
+```{r}
+# for the function, we'll say that we need an input sample size, an input mean, and an input sd 
+
+sim_mean_sd = function(sample_size, mu, sigma) {
+  
+  sim_data = 
+  tibble(
+    x = rnorm(n = sample_size, mean = mu, sd = sigma)
+  )
+
+
+sim_data |>
+  summarize(
+    mean = mean(x), 
+    sd = sd(x)
+)
+}
+
+# 1st argument = 1st argument, and so on
+sim_mean_sd(100,6,3)
+
+# or named matching (typically should use this(could be in different order))
+
+sim_mean_sd(sample_size = 100,mu = 6, sigma = 3)
+
+# can also make default values for the original function
+
+#"sim_mean_sd = function(sample_size, mu = 3, sigma = 4)"
+
+# we want it to show a table of about these numbers
+
+# the function creates a dataframe based on the inputs, summarizes it to compute a mean and sd 
+
+
+
+```
+
+## the point of this IS
+
+if i run this multiple times, each time is going to create a different normal distribution, mean, and sd. If i do this over and over again, then each time i will get a different mean and different sd, and over time i can learn about that process. how much we might expect the mean to shift away from the mean value
+
+In general, if i am able to do this again and again and again, i would start to be able to get some idea of what the mean and sd look like incomparison to the true value
+
