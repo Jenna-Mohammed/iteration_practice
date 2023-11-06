@@ -1,0 +1,137 @@
+---
+title: "Writing Functions"
+author: "Jenna Mohammed"
+date: '2023-11-06'
+output: html_document
+---
+
+# Iteration
+ Iteration - the process of doing the same thing over and over again
+ 
+### Arguments 
+ 
+- what going into the function (ex. x in mean(x)
+- can take default values
+- use readable names
+
+### Body
+
+- Data input checks using conditional execution 
+- perform operations 
+- format output
+
+### Return -> this specific thing
+
+### Scoping 
+- variables in global enviornment, when you execute a function it creates an environment 
+- problematic if function is using a vairable that exists somewhere in your code but not in the global enviornment
+- you want to make sure that the code inside of your function is entirely self contained
+
+### conditional execution 
+
+### how to write functions 
+
+- start very small , avoid unneeded complexity
+
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rvest)
+```
+
+## Do something simple 
+
+If i wanted to compute z scores, i need to take whatever my input vector is and take the mean and sd of it and do the operation 
+
+```{r}
+# take sample and convert into collection of z scored 
+
+x_vec = rnorm(30, mean = 5, sd = 3)
+
+# will take the z score 
+
+(x_vec - mean(x_vec)) / sd(x_vec)
+
+```
+
+I want a function to compute z score 
+
+```{r}
+z_scores = function(x) {
+
+ z =  (x - mean(x)) / sd(x)  
+ 
+ return(z)
+  
+}
+  
+# everything that happens between the brackets happens inside the body of the function
+
+# we want the body of the function to depend on "x" since that is what it is called -> only want the variable x 
+
+# we have written the function ^ and it is waiting for us to operate on it 
+
+z_scores(x_vec)
+
+# we are telling z scores that the input ^ that whenever we see an x in the body of a function, that is where we are going to plug in "x_vec
+```
+
+Try my function on some other things 
+
+```{r error=TRUE}
+z_scores(3)
+
+# ^ cannpt compute sd of 3 so it will give you Na
+
+z_Scores("my name is Jenna")
+
+# ^ cannot take mean of a character so it won't work
+
+z_scores(mtcars)
+
+# cannot take mean of a dataset so it won't work
+
+z_scores(c(TRUE, TRUE, FALSE, TRUE))
+
+# this works, reads this as a sequence and turns it into 0's and 1's , converts to 1101 and can then compute the mean and sd 
+```
+
+let's update the function 
+
+goal -> if someone tries to input something that doesn't make sense we want this to not work 
+
+```{r}
+z_scores = function(x) {
+  
+ if (!is.numeric(x)) {
+   stop("Input must be numeric")
+ }
+
+  if (length(x) < 3) {
+    stop("Input must have at least 3 numbers")
+  }
+
+ z =  (x - mean(x)) / sd(x)  
+ 
+ return(z)
+  
+}
+
+# if someone passes in something that is logical, the function is going to be false
+
+# the "Stop" function allows you to express a message when the function doesn't work
+
+z_scores(x_vec)
+
+```
+
+```{r error=TRUE}
+z_scores(3)
+
+z_Scores("my name is Jenna")
+
+z_scores(mtcars)
+
+z_scores(c(TRUE, TRUE, FALSE, TRUE))
+
+```
