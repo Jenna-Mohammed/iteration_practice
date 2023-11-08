@@ -1,0 +1,100 @@
+---
+title: "Iteration and List Columns"
+author: "Jenna Mohammed"
+date: '2023-11-08'
+output: html_document
+---
+
+### For Loops 
+- output object (something to save), iterate over some sequence. inside will have some body of code, input object as well
+ 
+ format 
+ - input list
+ - output list
+ - index that keeps track of what iteration that you're on
+ 
+### loop functions 
+
+loops can get to be a bit tedious, loop functions are a way to clean up loops 
+
+idea: give me an input list and function, i will give an output
+
+purrr:map()
+
+### map 
+
+goal of map is to clarify loop process 
+
+will provide an output. focusing on input, function, output
+
+output = map(input, f)
+
+
+### lists 
+
+can be considered a dataframe
+
+powerful tool for iteration
+
+can map a function to each element of a input list (dataframe), export the output list, and save it in the same dataframe. Keeps everything together in one dataframe (easier to keep track of)
+
+```{r}
+library(tidyverse)
+library(rvest)
+```
+
+## lists 
+ you can put anything ina list 
+ 
+```{r}
+vec_numeric = 5:8
+vec_char = c("My", "name", "is", "Jenns")
+vec_logical = c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE)
+mat = matrix(1:8, nrow = 2, ncol = 4)
+
+summary = summary(rnorm(100))
+
+# if you'd want to put these into a dataframe, you need to make sure you have the same number of elements in each of these
+
+# you can't put all of this into a dataframe, but you can put it all into a list 
+
+l = list(
+  vec_numeric = 5:8,
+  vec_char = c("My", "name", "is", "Jenns"),
+  vec_logical = c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
+  mat = matrix(1:8, nrow = 2, ncol = 4),
+  summary = summary(rnorm(100))
+  
+)
+  
+print(l)
+
+# the below 3 do the same thing 
+
+l$vec_numeric
+l[[1]]
+l[["vec_numeric"]]
+
+```
+ 
+ ## `for` loop
+ 
+```{r}
+list_norm = 
+  list(
+    a = rnorm(20, mean = 3, sd = 1),
+    b = rnorm(30, mean = 0, sd = 5),
+    c = rnorm(40, mean = 10, sd = 2),
+    d = rnorm(20, mean = -3, sd = 1))
+    #^ 4 lists, each a sample from a normal distribution
+    
+```
+ 
+
+```{r}
+list_norm 
+```
+ 
+ pause and get my old function
+ 
+ 
